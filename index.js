@@ -1,5 +1,5 @@
 const { Person } = require('./person')
 
-require('./modules/path')
+require('./modules/express')
 
 const person = new Person('Neto')

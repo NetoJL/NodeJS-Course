@@ -1,5 +1,6 @@
-const { Person } = require('./person')
+const dotenv = require('dotenv')
+const connectToDatabase = require('./src/database/connect')
 
-require('./modules/express')
+dotenv.config()
 
-const person = new Person('Neto')
+connectToDatabase()

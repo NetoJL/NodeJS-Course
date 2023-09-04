@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
 
 const connectToDatabase = async () => {
-	await mongoose.connect(
-		`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@nodejs-course.nojxxtl.mongodb.net/?retryWrites=true&w=majority`
-	),
-		(error) => {
-			if (error) {
-				return console.log('Error: ', error);
-			}
+	try {
+		await mongoose.connect(
+			`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@nodejs-course.fsrviue.mongodb.net/?retryWrites=true&w=majority`,
+		);
+	} catch (error) {
+		return console.log('Erro: ', error)
+	}
 
-			return console.log('Connected sucessfully');
-		};
+	console.log('Connected to database sucessfully')
 };
 
 module.exports = connectToDatabase;

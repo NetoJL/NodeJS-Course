@@ -1,6 +1,7 @@
 const express = require('express')
-
 const app = express()
+
+const UserModel = require('../src/models/user.model')
 
 app.get('/home', (req, res) => {
     res.contentType('application/html')
@@ -22,6 +23,12 @@ app.get('/users', (req, res) => {
     res.status(200).json(users)
 })
 
-const port = 3000
+app.post('/users', (req, res) => {
+    const user = UserModel.create(req.body)
+
+    res.status(201).json(user)
+})
+
+const port = 8080
 
 app.listen(port, () => console.log(`Listening with express in port ${port}`))

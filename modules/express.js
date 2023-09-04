@@ -1,34 +1,62 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 
-const UserModel = require('../src/models/user.model')
+const UserModel = require('../src/models/user.model');
 
-app.get('/home', (req, res) => {
-    res.contentType('application/html')
-    res.status(200).send('<h1> Hello World </h1>')
+app.use(express.json())
+
+app.get('/users', async (req, res) => {
+	try {
+        const users = await UserModel.find({})
+
+        res.status(200).json(users)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+});
+
+app.get('/users/:id', async (req,res) => {
+    try {
+        const id = req.params.id
+
+        const user = await UserModel.findById(id)
+
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
 })
 
-app.get('/users', (req, res) => {
-    const users = [
-        {
-            name: 'John Doe',
-            email: 'john@doe.com',
-        },
-        {
-            name: 'Jane Doe',
-            email: 'jane@doe.com',
-        },
-    ];
+app.post('/users', async (req, res) => {
+	try {
+		const user = await UserModel.create(req.body);
 
-    res.status(200).json(users)
+		res.status(201).json(user);
+	} catch (error) {
+		res.status(500).send(error.message);
+	}
+});
+
+app.patch('/users/:id', async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
 })
 
-app.post('/users', (req, res) => {
-    const user = UserModel.create(req.body)
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndDelete(req.params.id)
 
-    res.status(201).json(user)
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
 })
 
-const port = 8080
+const port = 8080;
 
-app.listen(port, () => console.log(`Listening with express in port ${port}`))
+app.listen(port, () => console.log(`Listening with express in port ${port}`));
